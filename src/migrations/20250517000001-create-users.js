@@ -1,5 +1,3 @@
-
-// service-users/migrations/20230726000000-create-users.js
 'use strict';
 
 module.exports = {
@@ -24,11 +22,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      first_name: {
+      firstName: {
         type: Sequelize.STRING,
         allowNull: true
       },
-      last_name: {
+      lastName: {
         type: Sequelize.STRING,
         allowNull: true
       },
@@ -36,28 +34,21 @@ module.exports = {
         type: Sequelize.ENUM('user', 'admin'),
         defaultValue: 'user'
       },
-      is_active: {
+      isActive: {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       },
-      last_login: {
-        type: Sequelize.DATE,
-        allowNull: true
-      },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      deleted_at: {
-        type: Sequelize.DATE,
-        allowNull: true
       }
     });
   },
+
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('users');
   }
