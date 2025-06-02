@@ -1,22 +1,42 @@
 const express = require('express');
-const userController = require('../controllers/user.controller');
-const authMiddleware = require('../middleware/auth.middleware');
-const { userValidator } = require('../middleware/validator');
-
 const router = express.Router();
 
-// Routes publiques
-router.post('/register', userValidator.register, userController.register);
-router.post('/login', userValidator.login, userController.login);
+// Route de santé
+router.get('/health', (req, res) => {
+    res.status(200).json({ status: 'UP' });
+});
 
-// Routes protégées
-router.get('/profile', authMiddleware, userController.getProfile);
-router.put('/profile', authMiddleware, userValidator.updateProfile, userController.updateProfile);
-router.put('/change-password', authMiddleware, userValidator.changePassword, userController.changePassword);
-router.get('/verify-token', authMiddleware, userController.verifyToken);
+// Route pour obtenir tous les utilisateurs
+router.get('/', (req, res) => {
+    // Ici, vous pourriez récupérer les utilisateurs depuis une base de données
+    res.status(200).json({
+        users: [
+            { id: 1, username: 'admin', role: 'ADMIN' },
+            { id: 2, username: 'user', role: 'USER' }
+        ]
+    });
+});
 
-// Routes admin
-router.get('/', authMiddleware, userController.getAllUsers);
-router.put('/:userId/toggle-status', authMiddleware, userController.toggleUserStatus);
+// Route pour obtenir un utilisateur par ID
+router.get('/:id', (req, res) => {
+    const { id } = req.params;
+    
+    // Ici, vous pourriez récupérer l'utilisateur depuis une base de données
+    if (id === '1') {
+        res.status(200).json({
+            id: 1,
+            username: 'admin',
+            role: 'ADMIN'
+        });
+    } else if (id === '2') {
+        res.status(200).json({
+            id: 2,
+            username: 'user',
+            role: 'USER'
+        });
+    } else {
+        res.status(404).json({ error: 'Utilisateur non trouvé' });
+    }
+});
 
 module.exports = router;
